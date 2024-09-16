@@ -1,0 +1,30 @@
+class Solution {
+    public int findMinDifference(List<String> timePoints) {
+        boolean mins[] = new boolean[1440];
+        for(String time : timePoints) {
+            int h = Integer.parseInt(time.substring(0,2));
+            int m = Integer.parseInt(time.substring(3,5));
+            int min = 60*h+m;
+            if(mins[min]) return 0;
+            mins[min] = true;
+        }
+        int prev = -1;
+        int fV = -1;
+        int mD = Integer.MAX_VALUE;
+        for(int curr = 0; curr < 1440; curr++) {
+            if(mins[curr]) {
+                if(prev == -1) {
+                    fV = curr;
+                    prev = curr;
+                } else {
+                    mD = Math.min(mD, curr-prev);
+                    prev = curr;
+                }
+            }
+        }
+        if(prev != -1) {
+            mD = Math.min(mD, 1440+fV-prev);
+        }
+        return mD;
+    }
+}
